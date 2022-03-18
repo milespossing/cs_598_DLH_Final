@@ -1,0 +1,3 @@
+[submodule "G-Bert"]
+	path = G-Bert
+	url = https://github.com/jshang123/G-Bert.git
