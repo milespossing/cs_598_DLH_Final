@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Login
+      uses: docker/login-action@v1.14.1
+      with:
+        username: mpossing
+        password: ${{ secrets.DOCKER_PASS }}
+
+    - name: Build the Docker image
+      uses: docker/build-push-action@v2.10.0
+      with:
+        file: Dockerfile
+        tags: cs-598-bert:$(date +%s)
+        push: true
