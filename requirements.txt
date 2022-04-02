@@ -1,0 +1,9 @@
+# Already installed:
+# jupyter numpy matplotlib scikit-learn pytorch
+dill
+tensorboardX==2.5
+jupyter
+numpy
+matplotlib
+scikit-learn
+pandas
