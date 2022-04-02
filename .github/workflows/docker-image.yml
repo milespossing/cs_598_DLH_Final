@@ -22,5 +22,5 @@ jobs:
       uses: docker/build-push-action@v2.10.0
       with:
         file: Dockerfile
-        tags: cs-598-bert:$(date +%s)
+        tags: cs598/bert:$(date +%s)
         push: true
