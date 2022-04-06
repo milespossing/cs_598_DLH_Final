@@ -9,10 +9,14 @@ FROM base as torch
 ARG CUDA=CPU
 ARG TORCH=1.11.0
 RUN pip install torch==$TORCH
-RUN pip install torch-scatter torch-sparse torch-cluster torch-spline-conv -f https://data.pyg.org/whl/torch-1.11.0+CPU.html
-RUN pip install torch-geometric
+RUN pip install -qq torch-scatter -f https://data.pyg.org/whl/torch-$TORCH+$CUDA.html
+RUN pip install -qq torch-sparse -f https://data.pyg.org/whl/torch-$TORCH+$CUDA.html
+RUN pip install -qq torch-cluster -f https://data.pyg.org/whl/torch-$TORCH+$CUDA.html
+RUN pip install -qq torch-spline-conv -f https://data.pyg.org/whl/torch-$TORCH+$CUDA.html
+RUN pip install -qq torch-geometric
+RUN pip install -qq jupyter
 
 FROM torch
 
 COPY requirements.txt requirements.txt
-RUN pip install -q -q -r requirements.txt
+RUN pip install -qqr requirements.txt
