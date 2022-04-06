@@ -8,14 +8,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
+    - name: Docker Setup Buildx
+      uses: docker/sestup-buildx-action@1.6.0
     - name: Docker Login
       uses: docker/login-action@v1.14.1
       with:
         username: mpossing
         password: ${{ secrets.DOCKER_PASS }}
   
-    - name: Docker meta
-      id: meta
+    - name: Docker meta CPU
+      id: meta-cpu
       uses: docker/metadata-action@v3
       with:
         flavor: |
@@ -26,11 +29,35 @@ jobs:
         # generate Docker tags based on the following events/attributes
         tags: |
           type=sha
-
-    - name: Build the Docker image
+          
+    - name: Docker meta CUDA
+      id: meta-cuda
+      uses: docker/metadata-action@v3
+      with:
+        flavor: |
+          latest=true
+        # list of Docker images to use as base name for tags
+        images: |
+          mpossing/cs598-cuda
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=sha
+          
+    - name: Build the Docker image CPU
       uses: docker/build-push-action@v2.10.0
       with:
         file: Dockerfile
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta-cpu.outputs.tags }}
+        labels: ${{ steps.meta-cpu.outputs.labels }}
+        platforms: linux/arm64,linux/amd64
+        push: true
+
+    - name: Build the Docker image CUDA
+      uses: docker/build-push-action@v2.10.0
+      with:
+        file: Dockerfile
+        tags: ${{ steps.meta-cuda.outputs.tags }}
+        labels: ${{ steps.meta-cuda.outputs.labels }}
+        push: true
+        platforms: linux/arm64,linux/amd64
+        build-args: CUDA=CUDA
