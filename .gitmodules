@@ -1,3 +1,3 @@
 [submodule "G-Bert"]
-	path = G-Bert
+	path = G_Bert
 	url = https://github.com/milespossing/G-Bert.git
