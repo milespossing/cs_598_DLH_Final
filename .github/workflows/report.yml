@@ -11,3 +11,8 @@ jobs:
         with:
           working_directory: Report
           root_file: main.tex
+      - name: Updload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Report
+          path: Report/main.pdf
